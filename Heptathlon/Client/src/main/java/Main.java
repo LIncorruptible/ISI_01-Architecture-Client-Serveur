@@ -1,13 +1,7 @@
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
 import service.Checkout;
-
-
 import javax.swing.*;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,12 +11,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import static java.lang.Thread.sleep;
 
 public class Main extends JFrame {
     @Serial
@@ -43,7 +34,6 @@ public class Main extends JFrame {
     JButton SendDataToSiege = new JButton(new ImageIcon("src/main/resources/BDD.png"));
     JButton UpdatePrices = new JButton(new ImageIcon("src/main/resources/price.png"));
     Checkout stub = (Checkout) Naming.lookup("rmi://localhost:1095/CK");
-
 
     //Constructor
     public Main() throws MalformedURLException, NotBoundException, RemoteException {
