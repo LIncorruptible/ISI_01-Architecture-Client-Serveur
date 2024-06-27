@@ -1,6 +1,6 @@
 package service;
+import helper.DBHelper;
 import siege.Siege;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -12,21 +12,22 @@ import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 
 public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
 
-    private static final String dbUrl = "jdbc:mysql://127.0.0.1:3306/heptathlon";
-    private static final String dbUser = "root";
-    private static final String dbPassword = "cariva";
     private static final String pathFacture = System.getProperty("user.home") + "\\Desktop\\factures\\";
+
+    private static final String rmiUrl = "rmi://localhost:1093";
+    private static final String rmiSiegeUrl = rmiUrl + "/SG";
+
+    private DBHelper dbHelper = new DBHelper();
+
     private static final Siege stub;
 
     static {
         try {
-            stub = (Siege) Naming.lookup("rmi://localhost:1093/SG");
+            stub = (Siege) Naming.lookup(rmiSiegeUrl);
         } catch (NotBoundException | RemoteException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -43,26 +44,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
 
     @Override
     public ResultSet sqlQuery(String query) throws RemoteException {
-        try {
-            Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
-            return statement.executeQuery(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return dbHelper.executeQuery(query);
     }
 
     @Override
     public void sqlUpdate(String query) throws RemoteException {
-        try {
-            Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
+        dbHelper.executeUpdateQuery(query);
     }
 
     @Override
