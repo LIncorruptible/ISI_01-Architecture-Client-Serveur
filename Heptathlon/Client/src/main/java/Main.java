@@ -33,6 +33,7 @@ public class Main extends JFrame {
     JButton CA  = new JButton(new ImageIcon("src/main/resources/CAB.png"));
     JButton SendDataToSiege = new JButton(new ImageIcon("src/main/resources/BDD.png"));
     JButton UpdatePrices = new JButton(new ImageIcon("src/main/resources/price.png"));
+
     Checkout stub = (Checkout) Naming.lookup("rmi://localhost:1095/CK");
 
     //Constructor

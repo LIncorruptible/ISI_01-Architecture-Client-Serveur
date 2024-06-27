@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.sql.*;
@@ -18,8 +19,8 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
 
     private static final String pathFacture = System.getProperty("user.home") + "\\Desktop\\factures\\";
 
-    private static final String rmiUrl = "rmi://localhost:1093";
-    private static final String rmiSiegeUrl = rmiUrl + "/SG";
+    private static final int rmiPort = 1093;
+    private static final String rmiSiegeUrl = "rmi://localhost:" + rmiPort + "/SG";
 
     private DBHelper dbHelper = new DBHelper();
 

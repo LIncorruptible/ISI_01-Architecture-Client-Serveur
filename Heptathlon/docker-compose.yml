@@ -16,7 +16,7 @@ services:
     ports:
       - '${FORWARD_DB_PORT:-3306}:3306'
     networks:
-        - common
+      - common
     healthcheck:
       test:
         - CMD
@@ -28,13 +28,12 @@ services:
   phpmyadmin:
     image: phpmyadmin:latest
     restart: always
-    ports:
-     - 8090:80
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-      PMA_HOST: mysql
+      PMA_HOST: 'mysql'
       PMA_USER: '${DB_USERNAME}'
       PMA_PASSWORD: '${DB_PASSWORD}'
+    ports:
+     - 8090:80
     networks:
       - common
     depends_on:

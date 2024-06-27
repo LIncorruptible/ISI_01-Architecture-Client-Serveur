@@ -1,11 +1,11 @@
 import service.CheckoutImpl;
+
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 public class Main {
-
     private static final int rmiPort = 1095;
     private static final String rmiCheckoutUrl = "rmi://localhost:" + rmiPort + "/CK";
 
