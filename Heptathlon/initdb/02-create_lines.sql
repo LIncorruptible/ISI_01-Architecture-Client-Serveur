@@ -184,14 +184,16 @@ INSERT INTO `article` (`reference`, `prix`, `id_stock`, `id_famille`) VALUES
 (104, 5.99, 59, 10),
 (105, 7.49, 60, 10);
 
-INSERT INTO `caisse` VALUES 
-(1,`Caisse 1`),
-(2,`Caisse 2`),
-(3,`Caisse 3`),
-(4,`Caisse 4`),
-(5,`Caisse 5`),
-(6,`Caisse 6`),
-(7,`Caisse 7`),
-(8,`Caisse 8`),
-(9,`Caisse 9`),
-(10,`Caisse 10`);
+INSERT INTO `caisse` (`id_caisse`, `nom`) VALUES 
+(1, 'Caisse 1'),
+(2, 'Caisse 2'),
+(3, 'Caisse 3'),
+(4, 'Caisse 4'),
+(5, 'Caisse 5'),
+(6, 'Caisse 6'),
+(7, 'Caisse 7'),
+(8, 'Caisse 8'),
+(9, 'Caisse 9'),
+(10, 'Caisse 10');
+
+UNLOCK TABLES;
