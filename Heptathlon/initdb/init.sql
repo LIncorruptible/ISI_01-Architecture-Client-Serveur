@@ -1,0 +1,6 @@
+CREATE DATABASE IF NOT EXISTS `heptathlon`;
+CREATE DATABASE IF NOT EXISTS `siege`;
+
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%';
+
+SET GLOBAL max_connections = 2048;
