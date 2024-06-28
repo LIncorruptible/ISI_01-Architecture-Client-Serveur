@@ -6,7 +6,7 @@ INSERT INTO `famille` (`id_famille`, `nom`) VALUES
 (3, 'Raquette de tennis'),
 (4, 'Ballon de football'),
 (5, 'Maillot de bain'),
-(6, 'Casque de vélo'),
+(6, 'Casque de velo'),
 (7, 'Sac de sport'),
 (8, 'Planche de surf'),
 (9, 'Gants de boxe'),

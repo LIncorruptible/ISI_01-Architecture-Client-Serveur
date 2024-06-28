@@ -8,9 +8,6 @@ import java.util.List;
 public interface Checkout extends Remote {
     //Test Server
     void  test() throws RemoteException;
-    //SQL QUERY:
-    public ResultSet sqlQuery(String query) throws RemoteException; //Usable only in server side
-    public void sqlUpdate(String query) throws RemoteException; //Usable only in server side
     //Other methods
     public List<String> getAllProductsRef() throws RemoteException;
     public List<List<String>> getAllFamily() throws RemoteException;
