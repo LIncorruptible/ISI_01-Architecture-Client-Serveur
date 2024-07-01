@@ -96,7 +96,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 ### Arrêt du projet 🚫
 
-Pour arrêter le projet, utilisez la commande **CTRL + C** dans le terminal où Docker est en cours d'exécution, puis arrêtez les conteneurs Docker actifs en utilisant Docker Desktop.
+Pour arrêter le projet, utilisez la commande **CTRL + C** dans le terminal où Docker est en cours d'exécution, puis arrêtez les conteneurs Docker actifs en utilisant Docker Desktop. Et stoppez l'exécution des différents projets ouverts.
 
 ## Utilisation 🌐
 
