@@ -42,6 +42,7 @@ Le système est composé de :
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 - [Docker Desktop](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module)
 - [Java Development Kit (JDK) 22](https://www.oracle.com/java/technologies/downloads/#java22)
+  *Note : Si vous passez par Intellij, le jdk vous sera proposé à installer automatiquement et proprement au lancement du projet : nous conseillons de faire comme cela.*
 - [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/)
 - [Git](https://git-scm.com/downloads)
 
