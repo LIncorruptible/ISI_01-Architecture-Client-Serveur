@@ -1,7 +1,6 @@
 package siege;
 
 import helper.DBHelper;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
@@ -9,22 +8,40 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
+/**
+ * This class implements the Siege interface.
+ * It provides the implementation of the methods declared in the Siege interface.
+ * It also provides the implementation of the methods that are specific to the Siege module.
+ */
 public class SiegeImpl extends UnicastRemoteObject implements Siege {
 
+    /**
+     * The path where the factures will be stored.
+     */
     private static final String pathFacture = System.getProperty("user.home")+"\\Desktop\\Siege\\factures\\";
 
+    /**
+     * The DBHelper object that will be used to interact with the databases.
+     * The first DBHelper object is used to interact with the siege database.
+     * The second DBHelper object is used to interact with the heptathlon database.
+     */
     private DBHelper dbHelperSiege = new DBHelper("siege");
     private DBHelper dbHelperHepta = new DBHelper("heptathlon");
 
+    /**
+     * The constructor of the SiegeImpl class.
+     * @throws RemoteException RemoteException is thrown when a call is made to a method in a remote object.
+     * @throws RemoteException RemoteException is thrown when a call is made to a method in a remote object.
+     */
     public SiegeImpl() throws RemoteException, RemoteException {
         super();
     }
 
-    @Override
-    public void testSiege() {
-        System.out.println("Siege is working");
-    }
-
+    /**
+     * Create a directory at the specified path.
+     * @param path path to the directory.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void makeDirectory(String path) throws RemoteException {
         try {
@@ -38,6 +55,13 @@ public class SiegeImpl extends UnicastRemoteObject implements Siege {
         }
     }
 
+    /**
+     * Get the total CA between two dates.
+     * @param date1 start date.
+     * @param date2 end date.
+     * @return total CA between the two dates.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public float getCABetweenDates(String date1, String date2) throws RemoteException {
         try (
@@ -60,6 +84,17 @@ public class SiegeImpl extends UnicastRemoteObject implements Siege {
         }
     }
 
+    /**
+     * Upload a file to the server.
+     * @param fileData file data.
+     * @param fileName file name.
+     * @param id_caisse caisse id.
+     * @param id_facture facture id.
+     * @param date_facture facture date.
+     * @param prix_totale_TTC ttc total price.
+     * @return true if the file was uploaded successfully, false otherwise.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public Boolean uploadFile(
             byte[] fileData,
@@ -84,6 +119,16 @@ public class SiegeImpl extends UnicastRemoteObject implements Siege {
         }
     }
 
+    /**
+     * Register a facture in the database.
+     * @param id_caisse caisse id.
+     * @param id_facture facture id.
+     * @param date_facture facture date.
+     * @param prix_totale_TTC ttc total price.
+     * @param path path to the facture file.
+     * @return true if the facture was registered successfully, false otherwise.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public Boolean registerFactureInDB(
             String id_caisse,
@@ -115,6 +160,14 @@ public class SiegeImpl extends UnicastRemoteObject implements Siege {
         }
     }
 
+    /**
+     * Check if a facture exists in the database.
+     * @param id_facture facture id.
+     * @param id_caisse caisse id.
+     * @param prix_totale_TTC ttc toal price.
+     * @return true if the facture exists, false otherwise.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public Boolean isExistFacture(String id_facture, String id_caisse, Float prix_totale_TTC) throws RemoteException {
         try (
@@ -133,6 +186,11 @@ public class SiegeImpl extends UnicastRemoteObject implements Siege {
         }
     }
 
+    /**
+     * Update the prices of the articles in the database.
+     * @return true if the prices were updated successfully, false otherwise.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public Boolean updatePrices() throws RemoteException {
         String path = System.getProperty("user.home")+"\\Desktop\\Siege\\prices.txt";
