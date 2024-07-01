@@ -20,6 +20,7 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
     private static final String pathFacture = System.getProperty("user.home") + "\\Desktop\\factures\\";
     private static final int rmiPort = 1093;
     private static final String rmiSiegeUrl = "rmi://localhost:" + rmiPort + "/SG";
+
     private DBHelper dbHelper = new DBHelper();
 
     private static final Siege stub;

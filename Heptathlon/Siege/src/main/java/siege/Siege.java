@@ -7,11 +7,6 @@ import java.sql.ResultSet;
 public interface Siege extends Remote {
     //Test Server
     void  testSiege() throws RemoteException;
-    //SQL QUERY:
-    public ResultSet sqlQuery(String query) throws RemoteException; //serverSide only
-    public void sqlUpdate(String query) throws RemoteException;// serverSide only
-    public ResultSet sqlQueryLocal(String query) throws RemoteException; //serverSide only
-    public void sqlUpdateLocal(String query) throws RemoteException;// serverSide only
     //Other methods
     public void makeDirectory(String path) throws RemoteException;//serverSide only
     public float getCABetweenDates(String date1, String date2) throws RemoteException; //external usage
