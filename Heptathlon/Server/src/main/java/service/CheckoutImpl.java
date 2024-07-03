@@ -129,11 +129,7 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         if (stock >= 0) {
             dbHelper.executeUpdateQuery(
                     "UPDATE stock SET quantite = " + (stock + quantity) +
-                    "WHERE id_stock = (" +
-                            "SELECT id_stock " +
-                            "FROM article " +
-                            "WHERE reference = " + ref +
-                    ")"
+                    " WHERE id_stock = (SELECT id_stock FROM article WHERE reference = " + ref + ")"
             );
         }
     }
@@ -417,15 +413,6 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         try (
                 ResultSet resultSet = dbHelper.executeQuery(
                         "DELETE FROM facturer " +
-                        "WHERE id_facture = " + id_facture
-                )
-        ) {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try (
-                ResultSet resultSet = dbHelper.executeQuery(
-                        "DELETE FROM facture " +
                         "WHERE id_facture = " + id_facture
                 )
         ) {

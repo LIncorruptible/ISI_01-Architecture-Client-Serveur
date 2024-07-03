@@ -15,58 +15,64 @@ public class DBHelper {
     private Connection connection;
 
     public DBHelper() {
+        connection = createConnection();
+    }
+
+    private Connection createConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(db_url, db_user, db_password);
-
-            if (connection != null) {
-                System.out.println("Connected to the database");
+            Connection resultConnection = DriverManager.getConnection(db_url, db_user, db_password);
+            if (resultConnection != null) {
+                System.out.println("Connection successful");
+                return resultConnection;
             } else {
-                System.out.println("Failed to make connection!");
+                System.out.println("Connection failed");
+                return null;
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
     public void closeConnection() throws SQLException {
-        if (connection != null) {
+        if (connection != null || connection.isClosed()) {
             connection.close();
             System.out.println("Connection closed");
+        } else {
+            System.out.println("Connection is already closed");
         }
     }
 
     public ResultSet executeQuery(String query) {
-        if (connection == null) {
-            System.out.println("Connection is null");
+        try {
+            if (connection == null || connection.isClosed()) connection = createConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            return resultSet;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
-        } else {
-            try {
-                Statement statement = connection.createStatement();
-                return statement.executeQuery(query);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
         }
     }
 
     public int executeUpdateQuery(String query) {
-        if (connection == null) {
-            System.out.println("Connection is null");
-            return 0;
-        } else {
-            try {
-                Statement statement = connection.createStatement();
-                return statement.executeUpdate(query);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return 0;
-            }
+        try {
+            if (connection == null || connection.isClosed()) connection = createConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Statement statement = connection.createStatement();
+            int result = statement.executeUpdate(query);
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }
