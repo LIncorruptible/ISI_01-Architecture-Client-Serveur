@@ -15,13 +15,29 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CheckoutImpl class is used to define the methods that can be called remotely.
+ */
 public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
-
+    /**
+     * Path to the factures directory.
+     */
     private static final String pathFacture = System.getProperty("user.home") + "\\Desktop\\factures\\";
+
+    /**
+     * RMI port and URL.
+     */
     private static final int rmiPort = 1093;
     private static final String rmiSiegeUrl = "rmi://localhost:" + rmiPort + "/SG";
+
+    /**
+     * Database helper object.
+     */
     private DBHelper dbHelper = new DBHelper();
 
+    /**
+     * Siege stub object.
+     */
     private static final Siege stub;
 
     static {
@@ -32,15 +48,19 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Constructor to create a CheckoutImpl object.
+     * @throws RemoteException if an error occurs.
+     */
     public CheckoutImpl() throws RemoteException {
         super();
     }
 
-    @Override
-    public void test() {
-        System.out.println("hello world");
-    }
-
+    /**
+     * Get all products references.
+     * @return list of all products references.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public List<String> getAllProductsRef() throws RemoteException {
         List<String> refs = new ArrayList<>();
@@ -62,6 +82,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the family of a product.
+     * @param ref product reference.
+     * @return family of the product.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public String getFamillyOfProduct(int ref) throws RemoteException {
         try (
@@ -79,6 +105,11 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get all families.
+     * @return list of all families.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public List<List<String>> getAllFamily() throws RemoteException {
         List<List<String>> families = new ArrayList<>();
@@ -106,6 +137,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the stock of a product.
+     * @param ref product reference.
+     * @return stock of the product.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public int getStockOfProduct(int ref) throws RemoteException {
         try (
@@ -123,6 +160,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Add a product to the cart.
+     * @param ref product reference.
+     * @param quantity product quantity.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void addProduct(int ref, int quantity) throws RemoteException {
         int stock = getStockOfProduct(ref);
@@ -134,6 +177,11 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Add a mass product to the cart.
+     * @param Ref_Quantity list of product references and quantities.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void addMassProduct(List<List<Integer>> Ref_Quantity) throws RemoteException {
         for (List<Integer> ref_quantity : Ref_Quantity) {
@@ -141,6 +189,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the product info.
+     * @param ref product reference.
+     * @return product info.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public List<String> getProductInfo(int ref) throws RemoteException {
         try (
@@ -165,6 +219,11 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the products info.
+     * @return list of products info.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public List<String> getProductsInfo() throws RemoteException {
         List<String> refs = getAllProductsRef();
@@ -180,6 +239,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the products by family.
+     * @param id_famille family id.
+     * @return list of products by family.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public List<String> getProductsByFamily(int id_famille) throws RemoteException {
         try (
@@ -207,6 +272,11 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Make a directory.
+     * @param path directory path.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void makeDirectory(String path) throws RemoteException {
         File file = new File(path);
@@ -243,6 +313,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         return id_new_facture;
     }
 
+    /**
+     * Get the price of a product.
+     * @param ref product reference.
+     * @return price of the product.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public float getPriceOfProduct(int ref) throws RemoteException {
         try (
@@ -259,6 +335,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the factured products.
+     * @param id_facture facture id.
+     * @return list of factured products.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public List<String> getFacturedProducts(int id_facture) throws RemoteException {
         try (
@@ -285,6 +367,13 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Set a new facture.
+     * @param Ref_Quantity list of product references and quantities.
+     * @param id_caisse caisse id.
+     * @return list of factured products.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public List<String> setNewFacture(List<List<Integer>> Ref_Quantity, int id_caisse) throws RemoteException {
         int id_facture = createFacture(id_caisse);
@@ -307,8 +396,18 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         return getFacturedProducts(id_facture);
     }
 
+    /**
+     * Edit the quantity of a factured product.
+     * @param id_facture facture id.
+     * @param ref product reference.
+     * @param quantity product quantity.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
-    public void editFacturedProductQuantity(int id_facture, int ref, int quantity) throws RemoteException {
+    public void editFacturedProductQuantity(
+            int id_facture, int ref,
+            int quantity
+    ) throws RemoteException {
         dbHelper.executeUpdateQuery(
                 "UPDATE facturer SET quantite = " + quantity + " " +
                 "WHERE id_facture = " + id_facture + " " +
@@ -316,13 +415,28 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         );
     }
 
+    /**
+     * Edit the quantity of a mass factured product.
+     * @param Ref_Quantity list of product references and quantities.
+     * @param id_facture facture id.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
-    public void editFacturedMassProductsQuantity(List<List<Integer>> Ref_Quantity, int id_facture) throws RemoteException {
+    public void editFacturedMassProductsQuantity(
+            List<List<Integer>> Ref_Quantity,
+            int id_facture
+    ) throws RemoteException {
         for (List<Integer> ref_quantity : Ref_Quantity) {
             editFacturedProductQuantity(id_facture, ref_quantity.get(0), ref_quantity.get(1));
         }
     }
 
+    /**
+     * Delete a factured product.
+     * @param id_facture facture id.
+     * @param ref product reference.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void deleteFacturedProduct(int id_facture, int ref) throws RemoteException {
         try (
@@ -337,13 +451,28 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Delete a mass factured product.
+     * @param Ref_Quantity list of product references and quantities.
+     * @param id_facture facture id.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
-    public void deleteFacturedMassProducts(List<List<Integer>> Ref_Quantity, int id_facture) throws RemoteException {
+    public void deleteFacturedMassProducts(
+            List<List<Integer>> Ref_Quantity,
+            int id_facture
+    ) throws RemoteException {
         for (List<Integer> ref_quantity : Ref_Quantity) {
             deleteFacturedProduct(id_facture, ref_quantity.getFirst());
         }
     }
 
+    /**
+     * Set the mode of payment.
+     * @param id_facture facture id.
+     * @param mode payment mode.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void setModePaiement(int id_facture, String mode) throws RemoteException {
         dbHelper.executeUpdateQuery(
@@ -352,6 +481,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         );
     }
 
+    /**
+     * Get the TTC price of a facture.
+     * @param id_facture facture id.
+     * @return TTC price of the facture.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public float getTTC(int id_facture) throws RemoteException {
         float TTC = 0;
@@ -374,6 +509,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the date of a facture.
+     * @param id_facture facture id.
+     * @return date of the facture.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public String getFactureDate(int id_facture) throws RemoteException {
         try (
@@ -391,6 +532,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the facture caisse info.
+     * @param id_facture facture id.
+     * @return caisse info of the facture.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public String getFactureCaisseInfo(int id_facture) throws RemoteException {
         try (
@@ -408,6 +555,11 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Cancel a facture.
+     * @param id_facture facture id.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void cancelFacture(int id_facture) throws RemoteException {
         try (
@@ -421,7 +573,12 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
-
+    /**
+     * Pay a facture, generate a file and update the stock.
+     * @param id_facture facture id.
+     * @param isCard true if the payment is by card, false otherwise.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public void payFacture(int id_facture, Boolean isCard) throws RemoteException {
         String mode = "";
@@ -487,6 +644,13 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the CA between dates.
+     * @param date1 start date.
+     * @param date2 end date.
+     * @return CA between the two dates.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public float getCABetweenDates(String date1, String date2) throws RemoteException {
         try (
@@ -509,6 +673,13 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Get the local CA between dates.
+     * @param date1 start date.
+     * @param date2 end date.
+     * @return local CA between the two dates.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public float getLocalCABetweenDates(String date1, String date2) throws RemoteException {
         try (
@@ -532,16 +703,33 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         }
     }
 
+    /**
+     * Change the slash format.
+     * @param path path to change.
+     * @return path with the new format.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public String changeSlashFormat(String path) throws RemoteException {
         return path.replace("\\", "/");
     }
 
+    /**
+     * Return the slash format.
+     * @param path path to return.
+     * @return path with the slash format.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public String returnSlashFormat(String path) throws RemoteException {
         return path.replace("/", "\\");
     }
 
+    /**
+     * Upload data to the siege.
+     * @return true if the data was uploaded successfully, false otherwise.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public Boolean uploadDataToSiege() throws RemoteException {
 
@@ -570,6 +758,11 @@ public class CheckoutImpl extends UnicastRemoteObject implements Checkout {
         return true;
     }
 
+    /**
+     * Update the prices.
+     * @return true if the prices were updated successfully, false otherwise.
+     * @throws RemoteException if an error occurs.
+     */
     @Override
     public Boolean updatePrices() throws RemoteException {
         return stub.updatePrices();

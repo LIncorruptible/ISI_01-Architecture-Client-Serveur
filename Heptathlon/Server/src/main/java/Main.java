@@ -5,10 +5,21 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
+/**
+ * Main class to start the checkout server.
+ */
 public class Main {
+    /**
+     * RMI port and URL for the checkout server.
+     */
     private static final int rmiPort = 1095;
     private static final String rmiCheckoutUrl = "rmi://localhost:" + rmiPort + "/CK";
 
+    /**
+     * Main method to start the checkout server.
+     * It creates the registry and binds the CheckoutImpl object on port 1095.
+     * @param args command line arguments.
+     */
     public static void main(String[] args) throws RemoteException {
         try {
             LocateRegistry.createRegistry(rmiPort);

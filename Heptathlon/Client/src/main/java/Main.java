@@ -15,10 +15,24 @@ import java.util.List;
 import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+/**
+ * Main class is used to create the main window of the application.
+ */
 public class Main extends JFrame {
+    /**
+     * Serial version UID.
+     */
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Facture ID.
+     */
     private int id_facture = -1;
+
+    /**
+     * Fields of the class.
+     */
     JTable table;
     JButton facturer = new JButton("Facturer"); //Done
     JButton ajouterStock = new JButton("Ajouter Stock");
@@ -34,9 +48,23 @@ public class Main extends JFrame {
     JButton SendDataToSiege = new JButton(new ImageIcon("src/main/resources/BDD.png"));
     JButton UpdatePrices = new JButton(new ImageIcon("src/main/resources/price.png"));
 
-    Checkout stub = (Checkout) Naming.lookup("rmi://localhost:1095/CK");
+    /**
+     * RMI port and URL for the checkout server.
+     */
+    private static final int rmiPort = 1095;
+    private static final String rmiCheckoutUrl = "rmi://localhost:" + rmiPort + "/CK";
 
-    //Constructor
+    /**
+     * Checkout stub.
+     */
+    Checkout stub = (Checkout) Naming.lookup(rmiCheckoutUrl);
+
+    /**
+     * Main method to start the checkout server.
+     * @throws MalformedURLException if an error occurs.
+     * @throws NotBoundException if an error occurs.
+     * @throws RemoteException if an error occurs.
+     */
     public Main() throws MalformedURLException, NotBoundException, RemoteException {
         //Window settings
         super("Heptathlon");
@@ -200,6 +228,10 @@ public class Main extends JFrame {
         });
     }
 
+    /**
+     * Update the prices.
+     * @throws RemoteException if an error occurs.
+     */
     private void updatePrices() throws RemoteException {
         if (stub.updatePrices()) {
             updateStatus("Prix des articles mis à jour avec succès");
@@ -211,6 +243,10 @@ public class Main extends JFrame {
         defaultProductsSetTable();
     }
 
+    /**
+     * Send data to the siege.
+     * @throws RemoteException if an error occurs.
+     */
     private void sendDataToSiege() throws RemoteException {
         if (stub.uploadDataToSiege()) {
             updateStatus("Données envoyées au siège avec succès");
@@ -221,6 +257,10 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Get the total CA between two dates.
+     * @throws RemoteException if an error occurs.
+     */
     private void getCA() throws RemoteException {
         //open option pane
         JFrame frame = new JFrame("Chiffre d'affaire");
@@ -305,6 +345,10 @@ public class Main extends JFrame {
         });
     }
 
+    /**
+     * Delete an article from the facture.
+     * @throws RemoteException if an error occurs.
+     */
     private void deleteArticle() throws RemoteException {
         List<List<Integer>> SelectedProducts_Ref_Quantity = getSelectedProductsRefQuantity(false , false);
         if (SelectedProducts_Ref_Quantity == null ) {
@@ -317,6 +361,10 @@ public class Main extends JFrame {
         updateStatus("Article supprimé avec succès");
     }
 
+    /**
+     * Edit the quantity of the factured products.
+     * @throws RemoteException if an error occurs.
+     */
     private void editQuantity() throws RemoteException {
         List<List<Integer>> SelectedProducts_Ref_Quantity = getSelectedProductsRefQuantity(true , false);
         if (SelectedProducts_Ref_Quantity == null ) {
@@ -331,6 +379,11 @@ public class Main extends JFrame {
         updateStatus("Quantité modifiée avec succès");
     }
 
+    /**
+     * Cancel a facture.
+     * @param split split bar between left and right body.
+     * @throws RemoteException if an error occurs.
+     */
     private void cancelFacture(JSplitPane split) throws RemoteException {
         if (id_facture == -1) {
             JOptionPane.showMessageDialog(this, "Erreur à la récupération de la facture en cours");
@@ -343,8 +396,11 @@ public class Main extends JFrame {
         this.id_facture = -1;
     }
 
-
-
+    /**
+     * Pay a facture.
+     * @param split split bar between left and right body.
+     * @throws RemoteException if an error occurs.
+     */
     private void payFacture(JSplitPane split) throws RemoteException {
         if (id_facture == -1) {
             JOptionPane.showMessageDialog(this, "Aucune facture en cours de création");
@@ -366,6 +422,11 @@ public class Main extends JFrame {
         this.id_facture = -1;
     }
 
+    /**
+     * Reset to default view.
+     * @param split split bar between left and right body.
+     * @throws RemoteException if an error occurs.
+     */
     private void resetToDefault(JSplitPane split) throws RemoteException {
         this.setJMenuBar( createHeader("Page des articles"));
         defaultProductsSetTable();
@@ -376,8 +437,10 @@ public class Main extends JFrame {
         searchArticle.setText("Rechercher un article");
     }
 
-
-
+    /**
+     * Create the header of the window.
+     * @throws RemoteException if an error occurs.
+     */
     private void searchArticle() throws RemoteException {
         String search = searchArticle.getText();
         if (search.isEmpty()) {
@@ -417,6 +480,11 @@ public class Main extends JFrame {
         updateStatus("Article trouvé    =>   Réf: " + Ref + "    Catégorie: " + Name + "    Stock: " + Stock + "    Prix: " + Price);
     }
 
+    /**
+     * Add stock to the products.
+     * @param split split bar between left and right body.
+     * @throws RemoteException if an error occurs.
+     */
     private void ajouterStock(JSplitPane split) throws RemoteException {
         List<List<Integer>> SelectedProducts_Ref_Quantity = getSelectedProductsRefQuantity(false , false);
         if (SelectedProducts_Ref_Quantity == null ) {
@@ -441,6 +509,10 @@ public class Main extends JFrame {
         resetToDefault(split);
     }
 
+    /**
+     * Set the default products in the table.
+     * @throws RemoteException if an error occurs.
+     */
     private void defaultProductsSetTable() throws RemoteException {
         List<String> products = stub.getProductsInfo();
         //Update table with new data
@@ -455,6 +527,10 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Selected or not selected status of the table.
+     * @param e table model event.
+     */
     private void selectedNotSelectedStatus(javax.swing.event.TableModelEvent e) {
         if (e.getColumn() == 0) {
             int row = e.getFirstRow();
@@ -474,6 +550,13 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Get selected products with their references and quantities.
+     * @param isValide if the quantity is valid.
+     * @param stockCheck if the quantity is not null.
+     * @return list of selected products with their references and quantities.
+     * @throws RemoteException if an error occurs.
+     */
     private List<List<Integer>> getSelectedProductsRefQuantity(Boolean isValide, Boolean stockCheck) throws RemoteException {
         List<List<Integer>> SelectedProducts_Ref_Quantity = new ArrayList<>();
         //Get selected rows
@@ -516,7 +599,11 @@ public class Main extends JFrame {
         return SelectedProducts_Ref_Quantity;
     }
 
-
+    /**
+     * Facturer button clicked.
+     * @throws InterruptedException if an error occurs.
+     * @throws RemoteException if an error occurs.
+     */
     private void facturerClicked() throws InterruptedException, RemoteException {
         System.out.println("Facturer clicked");
         updateStatus("Création de la facture en cours ...");
@@ -539,10 +626,25 @@ public class Main extends JFrame {
 
     }
 
+    /**
+     * Update the header of the window.
+     * @param id_facture facture id.
+     * @param title title id.
+     * @param date_facture facture id.
+     * @param ttc ttc total price.
+     */
     private void updateHeader(int id_facture, String title, String date_facture, String ttc) {
         this.setJMenuBar( createFactureHeader(id_facture, title, date_facture, ttc));
     }
 
+    /**
+     * Create the header of the facture.
+     * @param id_facture facture id.
+     * @param title title.
+     * @param date_facture facture date.
+     * @param ttc ttc total price.
+     * @return JMenuBar header of the facture.
+     */
     private JMenuBar createFactureHeader(int id_facture, String title, String date_facture, String ttc) {
         this.setTitle("Date de la facture: " + date_facture + "   TTC: " + ttc + " EUR");
 
@@ -592,7 +694,11 @@ public class Main extends JFrame {
         return header;
     }
 
-
+    /**
+     * Update the table with the new data.
+     * @param products new data products.
+     * @return number of products updated.
+     */
     private int updateTableWithNewData(List<String> products) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -613,7 +719,11 @@ public class Main extends JFrame {
         return Integer.parseInt(products.get(products.size() -1));
     }
 
-    //Status bar
+    /**
+     * Create the footer of the window.
+     * @param status status.
+     * @return JPanel footer of the window.
+     */
     private JPanel createFooter(String status) {
         JPanel footer = new JPanel();
         footer.setLayout( new GridLayout(1, 1));
@@ -621,6 +731,10 @@ public class Main extends JFrame {
         return footer;
     }
 
+    /**
+     * Update the status.
+     * @param status new status.
+     */
     private void updateStatus(String status) {
         try {
             JPanel footer = (JPanel) this.getContentPane().getComponent(1);
@@ -632,7 +746,11 @@ public class Main extends JFrame {
         }
     }
 
-    //List of articles
+    /**
+     * Create the right body of the window.
+     * @return JPanel right body of the window.
+     * @throws RemoteException if an error occurs.
+     */
     private JPanel createBodyRight() throws RemoteException {
         JPanel body_right = new JPanel();
         body_right.setLayout( new GridLayout(1, 1));
@@ -684,9 +802,11 @@ public class Main extends JFrame {
         return body_right;
     }
 
-
-
-    //Family Tree
+    /**
+     * Create the left body of the window.
+     * @return JPanel left body of the window.
+     * @throws RemoteException if an error occurs.
+     */
     private JPanel createBodyLeft() throws RemoteException {
         JPanel body_left = new JPanel();
         body_left.setLayout( new GridLayout(1, 1));
@@ -712,7 +832,11 @@ public class Main extends JFrame {
         return body_left;
     }
 
-
+    /**
+     * Create the header of the window.
+     * @param title title of the window.
+     * @return JMenuBar header of the window.
+     */
     private JMenuBar createHeader(String title) {
         JMenuBar header = new JMenuBar();
         header.setLayout( new GridLayout(2, 1));
@@ -760,16 +884,17 @@ public class Main extends JFrame {
         return header;
     }
 
+    /**
+     * Main method to start the checkout server and create the main window of the application.
+     * @param args arguments.
+     * @throws MalformedURLException if an error occurs.
+     * @throws NotBoundException if an error occurs.
+     * @throws RemoteException if an error occurs.
+     * @throws UnsupportedLookAndFeelException if an error occurs.
+     */
     public static void main(String[] args) throws MalformedURLException, NotBoundException, RemoteException, UnsupportedLookAndFeelException {
         UIManager.setLookAndFeel( new FlatDarculaLaf());
         Main main = new Main();
         main.setVisible(true);
-//        try {
-//            Checkout stub = (Checkout) Naming.lookup("rmi://localhost:1095/CK");
-//            stub.test();
-//        } catch (Exception e) {
-//            System.err.println("Client exception: " + e.toString());
-//            e.printStackTrace();
-//        }
     }
 }
