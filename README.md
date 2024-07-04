@@ -51,8 +51,8 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 1. **Cloner le projet depuis GitHub**
 
     ```bash
-    git clone https://github.com/your-repository.git
-    cd your-repository
+    git clone https://github.com/LIncorruptible/ISI_01-Architecture-Client-Serveur.git
+    cd ISI_01-Architecture-Client-Serveur-main
     ```
     ou bien télécharger le zip du repository et extrayez le ou bon vous semble sur votre machine locale.
 
@@ -74,6 +74,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
     ```bash
     docker-compose up -d
+    start rmiregistry
     ```
 
 2. **Compiler les projets**
