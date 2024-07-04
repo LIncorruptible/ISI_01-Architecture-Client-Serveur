@@ -209,7 +209,7 @@ public class SiegeImpl extends UnicastRemoteObject implements Siege {
                         "WHERE reference = '" + data[0] + "'"
                 );
 
-                return statementStatus > 0;
+//                return statementStatus > 0;
             }
             System.out.println("Prices updated successfully");
             return true;
